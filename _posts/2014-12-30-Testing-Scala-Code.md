@@ -5,8 +5,8 @@ title: Testing Scala Code
 
 Testing Scala highlight:
 
-´´´ scala
+```scala
 def greeting(name: String):String = {
 	s"Hello $name"
 }
-´´´
+```
