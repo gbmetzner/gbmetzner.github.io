@@ -1,8 +1,12 @@
 ---
 layout: post
-title: Just a test!
+title: My first post
 ---
 
-This is my first test using jekyll on github.
+This is my first time posting in a blog. 
 
-It seems very interesting.
+I started this blog to share some codes and ideas that I have while I'm working.
+
+You're free to do whatever you want using the code posted here.
+
+I hope this blog can help you.
