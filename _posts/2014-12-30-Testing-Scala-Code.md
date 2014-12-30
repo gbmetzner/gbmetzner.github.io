@@ -5,7 +5,7 @@ title: Testing Scala Code
 
 Testing Scala highlight:
 
-``` scala
+``` javascript
 def greeting(name: String):String = {
 	s"Hello $name"
 }
