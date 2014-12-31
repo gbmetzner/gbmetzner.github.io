@@ -31,8 +31,9 @@ After that, we're going to configure our web application and database.
 
 Firstly, we need to configure two schemas on MySQL, something like this:
 
-        ```html
-		<div>ths is some preformatted code</div>
-		```
+{% highlight python %}
+def yourfunction():
+     print "Hello World!"
+{% endhighlight %}
 
 
