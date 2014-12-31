@@ -32,7 +32,9 @@ After that, we're going to configure our web application and database.
 Firstly, we need to configure two schemas on MySQL, something like this:
 
 ´´´ scala
-def test(a:String){s"$test}
+def greeting(name: String):String = {
+s"Hello $name"
+}
 ´´´
 
 
