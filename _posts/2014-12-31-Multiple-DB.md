@@ -31,21 +31,6 @@ After that, we're going to configure our web application and database.
 
 Firstly, we need to configure two schemas on MySQL, something like this:
 
-´´´ scala
-def greeting(name: String):String = {
-s"Hello $name"
-}
-´´´
-
-
-´´´sql
-CREATE SCHEMA `user1` DEFAULT CHARACTER SET utf8 ;
-´´´
-
-and
-
-´´´sql
-CREATE SCHEMA `user2` DEFAULT CHARACTER SET utf8 ;
-´´´
+´´´ scala def greeting(name: String):String = { s"Hello $name" } ´´´
 
 
