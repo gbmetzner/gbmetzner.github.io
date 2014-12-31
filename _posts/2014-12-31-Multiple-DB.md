@@ -9,7 +9,7 @@ In this post I'm going to show you how I solved it, sharing the same application
 
 We're going to use [Play Framework](https://www.playframework.com/), [Scala](http://www.scala-lang.org), [Slick](http://slick.typesafe.com), and [MySQL](http://www.mysql.com). 
 
-1. Creating a Play application
+### Step 1: Creating a Play application
 
 First of all, we'll create a new Play Scala. I like to use [TypeSafe Activator](https://typesafe.com/activator) to create a new Scala projects.
 
@@ -19,25 +19,25 @@ To create a new Scala project type on your terminal:
 
 Typing it on terminal will show the list below:
 
-[<img src="{{ site.baseurl }}/images/multipledb/01.png" style="width: 400px;"/>]
+<img src="{{ site.baseurl }}/images/multipledb/01.png" style="width: 400px;"/>
 
 Choose the number 6 to create a Play Scala project and give a name to it, e.g *multidb* as below:
 
-[<img src="{{ site.baseurl }}/images/multipledb/02.png" style="width: 400px;"/>]
+<img src="{{ site.baseurl }}/images/multipledb/02.png" style="width: 400px;"/>
 
-2. Configuring Web Application and Database
+### Step 2: Configuring Web Application and Database
 
 After that, we're going to configure our web application and database.
 
 Firstly, we need to configure two schemas on MySQL, something like this:
 
-``` sql
+```sql
 CREATE SCHEMA `user1` DEFAULT CHARACTER SET utf8 ;
 ```
 
 and
 
-``` sql
+```sql
 CREATE SCHEMA `user2` DEFAULT CHARACTER SET utf8 ;
 ```
 
