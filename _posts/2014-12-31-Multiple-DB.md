@@ -31,8 +31,8 @@ After that, we're going to configure our web application and database.
 
 Firstly, we need to configure two schemas on MySQL, something like this:
 
-```html
-<div>this is some preformatted code</div>
-```
+        ```html
+		<div>ths is some preformatted code</div>
+		```
 
 
