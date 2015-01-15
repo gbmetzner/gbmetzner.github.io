@@ -175,18 +175,39 @@ object UserRepository {
 }
 {% endhighlight %}
 
-And now let's create our service. Again I am making it simple as a object:
+### Step 4: Sessions and transactions
+
+And now let's create our service. It's necessary to open sessions and transations and pass it implicitly to 
+our Repository.
+Again I am doing it simple just creating an object:
+
 {% highlight scala%}
 package services
 
-import models.{User, UserTable}
+import models.User
+import play.api.Play.current
+import play.api.db._
+import repositories.UserRepository
 
 import scala.slick.driver.MySQLDriver.simple._
-import scala.slick.lifted.TableQuery
 
-object UserRepository {
-  private val userTable = TableQuery[UserTable]
+object UserService {
 
-  def insert(user: User)(implicit s: Session): Unit = userTable += user
+  case class DSLocator(dsName: String) {
+    val db = Database.forDataSource(DB getDataSource dsName)
+  }
+
+  def insert(user: User)(dsName: String): Unit = DSLocator(dsName).db.withTransaction {
+    implicit session =>
+      UserRepository insert user
+  }
 }
 {% endhighlight %}
+
+I created a case class called DSLocator which will be used to get the right DataSource from Play.
+This way we're able to change the datasource just passing a different dsName configured in application.conf (_user1_ or _user2_).
+
+### Step 5: Controllers and routes
+
+
+
