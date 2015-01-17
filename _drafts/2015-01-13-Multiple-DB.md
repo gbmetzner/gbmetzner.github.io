@@ -24,35 +24,35 @@ To create a new Scala project type on your terminal:
 
 Typing it on Terminal will show the ouput below:
 
-`Fetching the latest list of templates...` <br/>
+`Fetching the latest list of templates...`   
 
-`Browse the list of templates: http://typesafe.com/activator/templates` <br/>
-`Choose from these featured templates or enter a template name:` <br/>
-  `1) minimal-akka-java-seed` <br/>
-  `2) minimal-akka-scala-seed` <br/>
-  `3) minimal-java` <br/>
-  `4) minimal-scala` <br/>
-  `5) play-java` <br/>
-  `6) play-scala` <br/>
-`(hit tab to see a list of all templates)` <br/>
+`Browse the list of templates: http://typesafe.com/activator/templates`   
+`Choose from these featured templates or enter a template name:`   
+  `1) minimal-akka-java-seed`   
+  `2) minimal-akka-scala-seed`   
+  `3) minimal-java`   
+  `4) minimal-scala`   
+  `5) play-java`   
+  `6) play-scala`   
+`(hit tab to see a list of all templates)`   
 
 Choose the number 6 to create a Play Scala project and give a name to it, e.g *multidb* as below:
 
-`> 6` <br/>
-`Enter a name for your application (just press enter for 'play-scala')` <br/>
-`> multidb` <br/>
-`OK, application "multidb" is being created using the "play-scala" template.` <br/>
+`> 6`   
+`Enter a name for your application (just press enter for 'play-scala')`   
+`> multidb`   
+`OK, application "multidb" is being created using the "play-scala" template.`   
 
-`To run "multidb" from the command line, "cd multidb" then:` <br/>
-`/Users/gbmetzner/Documents/Development/projects/blogs/multidb/activator run` <br/>
+`To run "multidb" from the command line, "cd multidb" then:`   
+`/Users/gbmetzner/Documents/Development/projects/blogs/multidb/activator run`   
 
-`To run the test for "multidb" from the command line, "cd multidb" then:` <br/>
-`/Users/gbmetzner/Documents/Development/projects/blogs/multidb/activator test` <br/>
+`To run the test for "multidb" from the command line, "cd multidb" then:`   
+`/Users/gbmetzner/Documents/Development/projects/blogs/multidb/activator test`   
 
-`To run the Activator UI for "multidb" from the command line, "cd multidb" then:` <br/>
-`/Users/gbmetzner/Documents/Development/projects/blogs/multidb/activator ui` <br/>
+`To run the Activator UI for "multidb" from the command line, "cd multidb" then:`   
+`/Users/gbmetzner/Documents/Development/projects/blogs/multidb/activator ui`   
 
-`Gustavos-MacBook-Pro:blogs gbmetzner$` <br/>
+`Gustavos-MacBook-Pro:blogs gbmetzner$`   
 
 ----
 
@@ -87,17 +87,17 @@ It's time to configure our web application.
 
 Open the application.conf file located on /conf/application.conf and type the following to configure these data sources on Play:
 
-`db.user1.driver = com.mysql.jdbc.Driver` <br/>
-`db.user1.url = "jdbc:mysql://localhost:3306/user1"` <br/>
-`db.user1.user = root` <br/>
-`db.user1.password = "root"` <br/>
+`db.user1.driver = com.mysql.jdbc.Driver`   
+`db.user1.url = "jdbc:mysql://localhost:3306/user1"`   
+`db.user1.user = root`   
+`db.user1.password = "root"`   
 
 and
 
-`db.user2.driver = com.mysql.jdbc.Driver` <br/>
-`db.user2.url = "jdbc:mysql://localhost:3306/user2"` <br/>
-`db.user2.user = root` <br/>
-`db.user2.password = "root"` <br/>
+`db.user2.driver = com.mysql.jdbc.Driver`   
+`db.user2.url = "jdbc:mysql://localhost:3306/user2"`   
+`db.user2.user = root`   
+`db.user2.password = "root"`   
 
 ----
 
@@ -120,23 +120,23 @@ libraryDependencies ++= Seq(
 After that, we need to update our project to download these libraries. To do that go to the root directory of our project
 and type _activator_ and right after type _update_ as following:
 
-`Gustavos-MacBook-Pro:multidb gbmetzner$ activator` <br/>
-`Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=1G; support was removed in 8.0` <br/>
-`[info] Loading global plugins from /Users/gbmetzner/.sbt/0.13/plugins` <br/>
-`[info] Updating {file:/Users/gbmetzner/.sbt/0.13/plugins/}global-plugins...` <br/>
-`[info] Resolving org.fusesource.jansi#jansi;1.4 ...` <br/>
-`[info] Done updating.` <br/>
-`[info] Loading project definition from /Users/gbmetzner/Documents/Development/projects/scala/multidb/project` <br/>
-`[info] Updating {file:/Users/gbmetzner/Documents/Development/projects/scala/multidb/project/}multidb-build...` <br/>
-`[info] Resolving org.fusesource.jansi#jansi;1.4 ...` <br/>
-`[info] Done updating.` <br/>
-`[info] Set current project to multidb (in build file:/Users/gbmetzner/Documents/Development/projects/scala/multidb/)` <br/>
-`[multidb] $ update` <br/>
-`[info] Updating {file:/Users/gbmetzner/Documents/Development/projects/scala/multidb/}root...` <br/>
-`[info] Resolving jline#jline;2.12 ...` <br/>
-`[info] Done updating.` <br/>
-`[success] Total time: 6 s, completed 03/01/2015 18:26:52` <br/>
-`[multidb] $ ` <br/>
+`Gustavos-MacBook-Pro:multidb gbmetzner$ activator`   
+`Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=1G; support was removed in 8.0`   
+`[info] Loading global plugins from /Users/gbmetzner/.sbt/0.13/plugins`   
+`[info] Updating {file:/Users/gbmetzner/.sbt/0.13/plugins/}global-plugins...`   
+`[info] Resolving org.fusesource.jansi#jansi;1.4 ...`   
+`[info] Done updating.`   
+`[info] Loading project definition from /Users/gbmetzner/Documents/Development/projects/scala/multidb/project`   
+`[info] Updating {file:/Users/gbmetzner/Documents/Development/projects/scala/multidb/project/}multidb-build...`   
+`[info] Resolving org.fusesource.jansi#jansi;1.4 ...`   
+`[info] Done updating.`   
+`[info] Set current project to multidb (in build file:/Users/gbmetzner/Documents/Development/projects/scala/multidb/)`   
+`[multidb] $ update`   
+`[info] Updating {file:/Users/gbmetzner/Documents/Development/projects/scala/multidb/}root...`   
+`[info] Resolving jline#jline;2.12 ...`   
+`[info] Done updating.`   
+`[success] Total time: 6 s, completed 03/01/2015 18:26:52`   
+`[multidb] $ `   
 
 Within the models package I created a case class called User as following:
 
@@ -209,5 +209,45 @@ This way we're able to change the datasource just passing a different dsName con
 
 ### Step 5: Controllers and routes
 
+We're almost done. Let's create a Controller called UserController as below:
 
+{% highlight scala%}
+package controllers
+
+import models.User
+import play.api.mvc.{Action, Controller}
+import services.UserService
+
+object UserController extends Controller {
+
+  def save(name: String) = Action {
+
+      UserService.insert(User(None, name))(name)
+
+      Ok("saved")
+  }
+}
+{% endhighlight %}
+
+For convenience I'm using the _name_ for bothe User and DSName.
+
+After that we need to configure our routes file as below to allow Play receives POST requests:
+
+{% highlight scala%}
+GET         /                    controllers.Application.index
+POST        /user/:user          controllers.UserController.save(user: String)
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file        controllers.Assets.at(path="/public", file)
+{% endhighlight %}
+
+### Step 6: Testing
+
+It's time to test our application, so, type _run_ on your terminal to start.
+
+I've installed HttpRequester on Firefox and filled up the fields as following to test the application:
+This one for _user1_:
+<img src="{{ site.baseurl }}/images/multipledb/httprequester1.png" />  
+And this one for _user2_:
+<img src="{{ site.baseurl }}/images/multipledb/httprequester2.png" />
 
