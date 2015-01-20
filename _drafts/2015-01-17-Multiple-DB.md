@@ -72,12 +72,17 @@ and
 CREATE SCHEMA `user2` DEFAULT CHARACTER SET utf8 ;
 {% endhighlight %}
 
-We need to create tables, so, execute the code below in both schemas user1 and user2:
+We need to create tables, so, run the code below in both schemas:
 
 {% highlight sql %}
 CREATE TABLE `user1`.`user` (
 `id` INT NOT NULL AUTO_INCREMENT,
-`value` VARCHAR(45) NOT NULL,
+`name` VARCHAR(45) NOT NULL,
+PRIMARY KEY (`id`));
+
+CREATE TABLE `user2`.`user` (
+`id` INT NOT NULL AUTO_INCREMENT,
+`name` VARCHAR(45) NOT NULL,
 PRIMARY KEY (`id`));
 {% endhighlight %}
 
@@ -249,5 +254,9 @@ I've installed HttpRequester on Firefox and filled up the fields as following to
 This one for _user1_:
 <img src="{{ site.baseurl }}/images/multipledb/httprequester1.png" />  
 And this one for _user2_:
-<img src="{{ site.baseurl }}/images/multipledb/httprequester2.png" />
+<img src="{{ site.baseurl }}/images/multipledb/httprequester2.png" />  
+
+We can see the result of our test checking the user database on both schemas _user1_ and _user2_ as below:
+<img src="{{ site.baseurl }}/images/multipledb/user1.png" />  
+<img src="{{ site.baseurl }}/images/multipledb/user2.png" />
 
