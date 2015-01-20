@@ -1,28 +1,27 @@
 ---
 layout: post
-title: Multiple DB using Play Framework and Scala
+title: Multiple Database using Play Framework and Scala
 ---
 
-Some time ago was asked to me o choose the database during a request depending on the logged user. 
+Some time ago was asked to me to change the database connection depending on the logged user. 
 
-This requirement looks somewhat weird, but it's needed because our clients want their own database instance. 
-So, we have a main application that manage logins and profiles and redirect the logged users to the right application's instance.
+This requirement looks weird but it's needed because our clients want to connect on their own database instance. 
 
-In this post I'm going to show you how I solved it, sharing the same application with a specific database instance based on the logged user. Problably there is a better way to solve it but this one was enough for me.
+In this post I'm going to show you how I solved it sharing the same application with a specific database instance based on the logged user. 
 
-We're going to use [Play Framework](https://www.playframework.com/), [Scala](http://www.scala-lang.org), [Slick](http://slick.typesafe.com), and [MySQL](http://www.mysql.com). 
+We're going to use [Play Framework](https://www.playframework.com/), [Scala](http://www.scala-lang.org), [Slick](http://slick.typesafe.com) and [MySQL](http://www.mysql.com). 
 
 ----
 
-### Step 1: Creating a Play application
+### Step 1: Play application
 
-First of all, we'll create a new Play Scala. I like to use [TypeSafe Activator](https://typesafe.com/activator) to create a new Scala projects.
+First of all, we'll create a new Play Scala application. I like to use [TypeSafe Activator](https://typesafe.com/activator) to create a new Scala projects.
 
 To create a new Scala project type on your terminal:
 
 > activator new
 
-Typing it on Terminal will show the ouput below:
+Typing it on your terminal will show the output below:
 
 `Fetching the latest list of templates...`   
 
@@ -36,7 +35,7 @@ Typing it on Terminal will show the ouput below:
   `6) play-scala`   
 `(hit tab to see a list of all templates)`   
 
-Choose the number 6 to create a Play Scala project and give a name to it, e.g *multidb* as below:
+Choose number 6 to create a Play Scala project and give it a name, e.g *multidb*:
 
 `> 6`   
 `Enter a name for your application (just press enter for 'play-scala')`   
@@ -56,7 +55,7 @@ Choose the number 6 to create a Play Scala project and give a name to it, e.g *m
 
 ----
 
-### Step 2: Configuring Web Application and Database
+### Step 2: Web Application and Database
 
 After that, we're going to configure our web application and database.
 
@@ -86,7 +85,7 @@ CREATE TABLE `user2`.`user` (
 PRIMARY KEY (`id`));
 {% endhighlight %}
 
-Now our database is ready.
+Our database is ready.
 
 It's time to configure our web application.
 
@@ -106,7 +105,9 @@ and
 
 ----
 
-### Step 3: Configuring Slick
+By default Play uses [BoneCP](http://jolbox.com) as connection pool library. It's possible to change this library but to do that you need to create a Play Plugin. We can talk about that later.
+
+### Step 3: Slick
 
 Configure Slick is quite simple, actually I don't know if I'm doing the right thing but it's working pretty well for me.
 
@@ -250,13 +251,23 @@ GET         /assets/*file        controllers.Assets.at(path="/public", file)
 
 It's time to test our application, so, type _run_ on your terminal to start.
 
-I've installed HttpRequester on Firefox and filled up the fields as following to test the application:
+I've installed HttpRequester on Firefox and filled up the fields to test the application:
 This one for _user1_:
-<img src="{{ site.baseurl }}/images/multipledb/httprequester1.png" />  
+![Post user1](/images/multipledb/httprequester1.png "Post user1")
 And this one for _user2_:
-<img src="{{ site.baseurl }}/images/multipledb/httprequester2.png" />  
+![Post user2](/images/multipledb/httprequester2.png "Post user2")
 
-We can see the result of our test checking the user database on both schemas _user1_ and _user2_ as below:
-<img src="{{ site.baseurl }}/images/multipledb/user1.png" />  
-<img src="{{ site.baseurl }}/images/multipledb/user2.png" />
+We can see the result of our test checking the user database on both schemas _user1_ and _user2_, as below:  
+_user1_:
+![Result of select user1](/images/multipledb/user1.png "Result of select user2")
+_user2_:
+![Result of select user2](/images/multipledb/user2.png "Result of select user2")
+
+As you can see each request was inserted on their own database.
+
+That's all folks!
+
+I hope I could help.
+
+If you have questions let me know.
 
