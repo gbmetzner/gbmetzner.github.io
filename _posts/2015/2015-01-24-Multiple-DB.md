@@ -5,9 +5,9 @@ title: Multiple Database using Play Framework and Scala
 
 Some time ago was asked to me to change the database connection depending on the logged user. 
 
-This requirement looks weird but it's needed because our clients want to connect on their own database instance. 
+This requirement looks weird but it's needed due the fact of our clients want to connect on their own database instance. 
 
-In this post I'm going to show you how I solved it sharing the same application with a specific database instance based on the logged user. 
+In this post I'm going to show you how I solved it sharing the same web application with a specific database instance based on the logged user. 
 
 We're going to use [Play Framework](https://www.playframework.com/), [Scala](http://www.scala-lang.org), [Slick](http://slick.typesafe.com) and [MySQL](http://www.mysql.com). 
 
@@ -17,11 +17,11 @@ We're going to use [Play Framework](https://www.playframework.com/), [Scala](htt
 
 First of all, we'll create a new Play Scala application. I like to use [TypeSafe Activator](https://typesafe.com/activator) to create a new Scala projects.
 
-To create a new Scala project type on your terminal:
+To do that type on your terminal:
 
 > activator new
 
-Typing it on your terminal will show the output below:
+It'll show the output below:
 
 `Fetching the latest list of templates...`   
 
@@ -49,15 +49,15 @@ Choose number 6 to create a Play Scala project and give it a name, e.g *multidb*
 `/Users/gbmetzner/Documents/Development/projects/blogs/multidb/activator test`   
 
 `To run the Activator UI for "multidb" from the command line, "cd multidb" then:`   
-`/Users/gbmetzner/Documents/Development/projects/blogs/multidb/activator ui`   
+`/Users/gbmetzner/Documents/Development/projects/blogs/multidb/activator ui`     
 
-`Gustavos-MacBook-Pro:blogs gbmetzner$`   
+Our Play application is done.
 
 ----
 
-### Step 2: Web Application and Database
+### Step 2: Database
 
-After that, we're going to configure our web application and database.
+After the Play application, we're going to configure our database.
 
 Firstly, we need to configure two schemas on MySQL, something like this:
 
@@ -71,7 +71,7 @@ and
 CREATE SCHEMA `user2` DEFAULT CHARACTER SET utf8 ;
 {% endhighlight %}
 
-We need to create tables, so, run the code below in both schemas:
+We need to create tables, so, run the code below (each one in their schema):
 
 {% highlight sql %}
 CREATE TABLE `user1`.`user` (
@@ -85,11 +85,11 @@ CREATE TABLE `user2`.`user` (
 PRIMARY KEY (`id`));
 {% endhighlight %}
 
-Our database is ready.
+Our database is done.
 
-It's time to configure our web application.
+It's time to configure the db connection on our Play application.
 
-Open the application.conf file located on /conf/application.conf and type the following to configure these data sources on Play:
+Open the application.conf file located on _/conf/application.conf_ and type the following to configure the data sources on Play:
 
 `db.user1.driver = com.mysql.jdbc.Driver`   
 `db.user1.url = "jdbc:mysql://localhost:3306/user1"`   
@@ -101,17 +101,17 @@ and
 `db.user2.driver = com.mysql.jdbc.Driver`   
 `db.user2.url = "jdbc:mysql://localhost:3306/user2"`   
 `db.user2.user = root`   
-`db.user2.password = "root"`   
+`db.user2.password = "root"`  
+
+By default Play uses [BoneCP](http://jolbox.com) as connection pool library. It's possible to change this library but to do that you need to create a Play Plugin. We'll talk about it later  
 
 ----
 
-By default Play uses [BoneCP](http://jolbox.com) as connection pool library. It's possible to change this library but to do that you need to create a Play Plugin. We can talk about that later.
-
 ### Step 3: Slick
 
-Configure Slick is quite simple, actually I don't know if I'm doing the right thing but it's working pretty well for me.
+Configuring Slick is quite simple, just a few lines of code.
 
-Firstly, we need to configure our build.sbt to add Slick and MySQL connector as following:
+We need to configure our build.sbt to add Slick and MySQL connector, as following:
 
 {% highlight scala %}
 libraryDependencies ++= Seq(
@@ -144,7 +144,7 @@ and type _activator_ and right after type _update_ as following:
 `[success] Total time: 6 s, completed 03/01/2015 18:26:52`   
 `[multidb] $ `   
 
-Within the models package I created a case class called User as following:
+Let's create our model. It'll be very simple, a User class with id and name:
 
 {% highlight scala %}
 package models
@@ -163,9 +163,11 @@ class UserTable(tag: Tag) extends Table[User](tag, "user") {
 }
 {% endhighlight %}
 
-I'll let to explain about Slick in another post, maybe it'll be better.
+This _UserTable_ class is needed to allow us access a lot of useful functions of Slick.
+I am going to explain Slick in another post.
 
-Now, let's create a simple object to represent our repository which receives a session implicitly:
+Now, let's create a simple object to represent our repository, which receives a Slick Session implicitly:
+
 {% highlight scala%}
 package repositories
 
@@ -183,9 +185,8 @@ object UserRepository {
 
 ### Step 4: Sessions and transactions
 
-And now let's create our service. It's necessary to open sessions and transations and pass it implicitly to 
-our Repository.
-Again I am doing it simple just creating an object:
+Let's create our service. It's necessary to open sessions and transations and pass it implicitly to our Repository.
+Again we're doing it simple just creating an object:
 
 {% highlight scala%}
 package services
@@ -210,8 +211,8 @@ object UserService {
 }
 {% endhighlight %}
 
-I created a case class called DSLocator which will be used to get the right DataSource from Play.
-This way we're able to change the datasource just passing a different dsName configured in application.conf (_user1_ or _user2_).
+This case class DSLocator will be used to get the right DataSource from Play.
+That way we're able to change the datasource just passing a different dsName configured in application.conf (_user1_ or _user2_).
 
 ### Step 5: Controllers and routes
 
@@ -235,9 +236,9 @@ object UserController extends Controller {
 }
 {% endhighlight %}
 
-For convenience I'm using the _name_ for bothe User and DSName.
+For convenience, let's use the _name_ for both User and DSName.
 
-After that we need to configure our routes file as below to allow Play receives POST requests:
+Now we need to configure our routes file as below, to allow Play receives POST requests:
 
 {% highlight scala%}
 GET         /                    controllers.Application.index
@@ -249,7 +250,7 @@ GET         /assets/*file        controllers.Assets.at(path="/public", file)
 
 ### Step 6: Testing
 
-It's time to test our application, so, type _run_ on your terminal to start.
+It's time to test our application, so, type _run_ on your terminal to start Play.
 
 I've installed HttpRequester on Firefox and filled up the fields to test the application:
 This one for _user1_:
@@ -263,11 +264,15 @@ _user1_:
 _user2_:
 ![Result of select user2](/images/multipledb/user2.png "Result of select user2")
 
-As you can see each request was inserted on their own database.
+As you can see, each request was inserted on their own database.
+
+**How it works**  
+What allow us change the database connection is the Play DBApi.scala.  
+This api creates a cache of connection pools when Play starts.  
+So, if you configure your application.conf with _db.somename.attribute_ play will look for a connection called _somename_ in its cache and won't create another connection pool.
 
 That's all folks!
 
 I hope I could help.
 
 If you have questions let me know.
-
