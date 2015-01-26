@@ -271,6 +271,9 @@ What allow us change the database connection is the Play DBApi.scala.
 This api creates a cache of connection pools when Play starts.  
 So, if you configure your application.conf with _db.somename.attribute_ play will look for a connection called _somename_ in its cache and won't create another connection pool.
 
+
+You can check out this source code [here](https://github.com/gbmetzner/play-multipledb)
+
 That's all folks!
 
 I hope I could help.
