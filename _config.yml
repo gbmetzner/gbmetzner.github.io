@@ -37,7 +37,7 @@ google_analytics: UA-58565383-1
 
 # Your website URL (e.g. http://barryclark.github.io or http://www.barryclark.co)
 # Used for Sitemap.xml and your RSS feed
-url: http://gbmetzner.github.oi
+url: http://gbmetzner.github.io
 
 # pagination
 paginate: 5
