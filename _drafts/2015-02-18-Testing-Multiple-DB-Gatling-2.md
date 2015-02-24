@@ -5,10 +5,9 @@ title: Testing Multiple Database using Gatling 2
 
 Hi there, everythin's fine?
 
-After my previous [post]({% post_url 2015/2015-01-24-Multiple-DB %}) I was wondering how could I write tests for it.  
-Searching on Google I found an article explaining how to use [Gatling 2](http://gatling.io/) to write stress tests.
+After my previous [post]({% post_url 2015/2015-01-24-Multiple-DB %}) I was wondering how I could write tests for it.  
+Searching on Google I've found an article explaining how to use [Gatling 2](http://gatling.io/) to write stress tests.
 You can check out this article [here](http://sysgears.com/articles/restful-service-load-testing-using-gatling-2/)
-
 
 According to the Gatling website:  
 
@@ -22,33 +21,73 @@ According to the Gatling website:
 
 Thus, in this post I'm going to show you how I've written the stress test for our [Multiple DB application]({% post_url 2015/2015-01-24-Multiple-DB %}).
 
-Firstly, we need to add Gatling sbt plugin on our --plugins.sbt-- file located on --play-multipledb/project-- directory as following:  
-`addSbtPlugin("io.gatling" % "gatling-sbt" % "2.1.0")`
+First of all create a new Scala project called --gatling-multidb--.
+
+After that place the following lines in the --plugins.sbt-- file located on projects directory:
+
+{% highlight scala %}
+addSbtPlugin("io.gatling" % "gatling-sbt" % "2.1.0")
+{% endhighlight %}
 
 This is needed to allow sbt run test on the terminal.
 
-After add Gatling sbt plugin we need to add Gatling dependecies to our project changing the build.sbt file as following:  
+After place Gatling sbt plugin we need to place Gatling dependecies to our project changing the build.sbt file as following:  
 
-`import play.PlayScala`  
-`import io.gatling.sbt.GatlingPlugin`
+{% highlight scala %}
+import io.gatling.sbt.GatlingPlugin
 
-`name := """multidb"""`
+name := """gatling-multidb"""
 
-`version := "1.0-SNAPSHOT"`
+version := "1.0"
 
-`lazy val root = (project in file(".")).enablePlugins(PlayScala)`
+scalaVersion := "2.11.5"
 
-`scalaVersion := "2.11.5"`
+val integration = "latest.integration"
 
-`val integration = "latest.integration"`
+enablePlugins(GatlingPlugin)
 
-`enablePlugins(GatlingPlugin)`
+libraryDependencies ++= Seq(
+  "org.scalatest" %% "scalatest" % "2.2.4" % "test",
+  "io.gatling" % "gatling-core" % integration % "test",
+  "io.gatling.highcharts" % "gatling-charts-highcharts" % integration % "test",
+  "io.gatling" % "gatling-test-framework" % integration % "test"
+)
+{% endhighlight %}
 
-`libraryDependencies ++= Seq(`
-  `jdbc,`
-  `"com.typesafe.slick" %% "slick" % integration,`
-  `"mysql" % "mysql-connector-java" % integration,`
-  `"io.gatling" % "gatling-core" % integration % "test",`
-  `"io.gatling.highcharts" % "gatling-charts-highcharts" % integration % "test",`
-  `"io.gatling" % "gatling-test-framework" % integration % "test"`
-`)`
+*Note:* Do not forget to run --reload-- before --update-- if you already have started activator.
+
+It's time to write some code.
+
+Let's create a class --MultidbSimulation-- called in the --test-- directory:
+
+{% highlight scala %}
+import io.gatling.core.Predef._
+import io.gatling.http.Predef._
+
+class MultiDBSimulation extends Simulation {
+
+  // the test scenario
+  val scn = scenario("MultiDBScenario").repeat(1) {
+    exec(http(session => "Request User 1")
+      .post("http://localhost:9000/user/user1")
+      .check(status is 200, substring("Logged: user1"))
+    ).exec(http(session => "Request user 2")
+      .post("http://localhost:9000/user/user2")
+      .check(status is 200, substring("Logged: user2"))
+      )
+  }
+
+  // application url
+  val httpProtocol = http.baseURL("http://localhost:9000")
+
+  // how many users
+  val oneThousand = 1000
+
+  setUp(scn.inject(atOnceUsers(oneThousand))).protocols(httpProtocol)
+    .assertions(global.successfulRequests.percent.is(100))
+
+}
+{% endhighlight %}
+
+To test just start our [Multiple DB application]({% post_url 2015/2015-01-24-Multiple-DB %}) and run --test-- on activator console.
+
