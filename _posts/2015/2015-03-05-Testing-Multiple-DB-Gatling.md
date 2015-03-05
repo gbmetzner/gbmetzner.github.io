@@ -1,12 +1,12 @@
 ---
 layout: post
-title: Testing Multiple Database using Gatling 2
+title: Testing Multiple Database using Gatling
 ---
 
 Hi there, everythin's fine?
 
 After my previous [post]({% post_url 2015/2015-01-24-Multiple-DB %}) I was wondering how I could write tests for it.  
-Searching on Google I've found an article explaining how to use [Gatling 2](http://gatling.io/) to write stress tests.
+Searching on Google I've found an article explaining how to use [Gatling](http://gatling.io/) to write stress tests.
 You can check out this article [here](http://sysgears.com/articles/restful-service-load-testing-using-gatling-2/)
 
 According to the Gatling website:  
@@ -21,17 +21,17 @@ According to the Gatling website:
 
 Thus, in this post I'm going to show you how I've written the stress test for our [Multiple DB application]({% post_url 2015/2015-01-24-Multiple-DB %}).
 
-First of all create a new Scala project called --gatling-multidb--.
+First of all create a new Scala project called __gatling-multidb__.
 
-After that place the following lines in the --plugins.sbt-- file located on projects directory:
+After that place the following lines in the __plugins.sbt__ file located on project directory:
 
 {% highlight scala %}
 addSbtPlugin("io.gatling" % "gatling-sbt" % "2.1.0")
 {% endhighlight %}
 
-This is needed to allow sbt run test on the terminal.
+This is needed to allow sbt run tests.
 
-After place Gatling sbt plugin we need to place Gatling dependecies to our project changing the build.sbt file as following:  
+After place Gatling sbt plugin we need to place Gatling dependecies to our project changing the __build.sbt__ file as following:  
 
 {% highlight scala %}
 import io.gatling.sbt.GatlingPlugin
@@ -40,25 +40,25 @@ name := """gatling-multidb"""
 
 version := "1.0"
 
-scalaVersion := "2.11.5"
+scalaVersion := "2.11.6"
 
 val integration = "latest.integration"
 
 enablePlugins(GatlingPlugin)
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "2.2.4" % "test",
+  "org.scalatest" %% "scalatest" % integration % "test",
   "io.gatling" % "gatling-core" % integration % "test",
   "io.gatling.highcharts" % "gatling-charts-highcharts" % integration % "test",
   "io.gatling" % "gatling-test-framework" % integration % "test"
 )
 {% endhighlight %}
 
-*Note:* Do not forget to run --reload-- before --update-- if you already have started activator.
+*Note:* Do not forget to run __reload__ before __update__ if you already have started activator.
 
 It's time to write some code.
 
-Let's create a class --MultidbSimulation-- called in the --test-- directory:
+Let's create a class __MultidbSimulation__ called in the __test__ directory:
 
 {% highlight scala %}
 import io.gatling.core.Predef._
@@ -67,13 +67,13 @@ import io.gatling.http.Predef._
 class MultiDBSimulation extends Simulation {
 
   // the test scenario
-  val scn = scenario("MultiDBScenario").repeat(1) {
+  val scn = scenario("MultiDBScenario").repeat(1) { // This scenario are going to be repeated once
     exec(http(session => "Request User 1")
-      .post("http://localhost:9000/user/user1")
-      .check(status is 200, substring("Logged: user1"))
+      .post("http://localhost:9000/user/user1") // URL to post using user1 database
+      .check(status is 200, substring("Logged: user1")) // Verify if status is 200 and response body contains this this string
     ).exec(http(session => "Request user 2")
-      .post("http://localhost:9000/user/user2")
-      .check(status is 200, substring("Logged: user2"))
+      .post("http://localhost:9000/user/user2") // URL to post using user2 database
+      .check(status is 200, substring("Logged: user2")) 
       )
   }
 
@@ -89,5 +89,18 @@ class MultiDBSimulation extends Simulation {
 }
 {% endhighlight %}
 
-To test just start our [Multiple DB application]({% post_url 2015/2015-01-24-Multiple-DB %}) and run --test-- on activator console.
+This class is our test class. That's where we configure the test's scenarios. It's a little bit simple but we can do interesting things
+using Gatling. It's nice to read the documentation, I'm doing it.
 
+To test just start our [Multiple DB application]({% post_url 2015/2015-01-24-Multiple-DB %}). After that, in the __gatling-multidb__
+directory type __activator__ and after type __test__. When it's finished we can check a very nice chart about our tests just typing
+__lastReport__ on terminal.
+
+
+You can check out this source code [here](https://github.com/gbmetzner/test-multipledb)
+
+That's all folks!
+
+I hope I could help.
+
+If you have questions let me know.
